@@ -2,6 +2,7 @@ import { ChildItem, ConItem } from './VItem';
 
 export interface VList {
   [index: string]: Array<any>;
+  // [index: number]: Array<any>;
   // 下面是组件
   condition: Array<ChildItem>;
   order: Array<ChildItem>;

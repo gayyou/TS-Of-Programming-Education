@@ -1,5 +1,21 @@
 import { VItem } from '../interface/VItem';
 
+export function checkData(data: any): boolean {
+  let isTrue = true;
+
+  if (data.type == 'if' || data.type == 'while' || data.type == 'circle' || data.type == 'judge') {
+    if (data.condition == null) {
+      return false;
+    }
+  }
+
+  for (let i = 0; i < data.children.length; i++) {
+    isTrue = checkData(data.children[i]);
+  }
+
+  return isTrue;
+}
+
 export function isUndef(tar: any) {
   return typeof tar === 'undefined';
 }
@@ -10,7 +26,10 @@ export function isUndef(tar: any) {
  */
 export function getTypeAndID(target: any) {
   if (isUndef(target)) {
-    return null;
+    return {
+      id: null,
+      type: null
+    };
   }
 
   return {

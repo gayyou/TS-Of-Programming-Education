@@ -1,5 +1,7 @@
 import { getTypeAndID, isUndef } from './common-utils';
 import { svgContainer } from '../models/model';
+import { findList } from './vlist-utils';
+import { VList } from '../interface/VList';
 
 export function isSvgContainer(checkTarget: any) {
   const checkDom = (target: any) => {
@@ -25,7 +27,10 @@ export function isSvgContainer(checkTarget: any) {
  */
 export function getSvgWH(target: any) {
   if (isUndef(target) || target == null) {
-    return null;
+    return {
+      width: 0,
+      height: 0
+    };
   }
 
   let boxInfo = target.getBBox(),
@@ -46,7 +51,10 @@ export function getSvgWH(target: any) {
  */
 export function getTransform(target: any) {
   if (isUndef(target)) {
-    return null;
+    return {
+      x: NaN,
+      y: NaN
+    };
   }
 
   let transInfo = target.getAttribute('transform'),
@@ -67,3 +75,32 @@ export function getTransform(target: any) {
 export function setTransform(target: any, payLoad: any) {
   target.setAttribute('transform', 'translate(' + payLoad.x + ',' + payLoad.y + ')');
 }
+
+// /**
+//  * @description 得到一个svg图的实际位置
+//  * @param {Dom} target 想要知道的目标
+//  * @param {List} rootList 根列表
+//  */
+// export function getTotalPosi(target: any, rootList: VList) {
+//   let clickList = findList(target, rootList),
+//       bashX = 0,
+//       bashY = 0;
+
+//   while(clickList !== rootList) {
+//     let { x, y } = getTransform(target);
+
+//     bashX += x;
+//     bashY += y;
+//     target = $(target).parent()[0];
+//     clickList = findList(target, rootList);
+//   }
+
+//   let { x, y } = getTransform(target);
+//   bashX += x;
+//   bashY += y;
+
+//   return {
+//     x: bashX,
+//     y: bashY
+//   }
+// }

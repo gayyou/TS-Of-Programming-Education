@@ -1,8 +1,9 @@
 import { VList } from '../interface/VList';
 import { VItem, ConItem } from '../interface/VItem';
-import { getTransform, isSvgContainer } from './svg-utils';
+import { getTransform, isSvgContainer, getSvgWH } from './svg-utils';
 import { isUndef, getTypeAndID } from './common-utils';
 import { svgComponentOption } from '../models/model';
+import { componentListMixin } from '../mixin/mixin';
 
 export function getAllChildren(contain: VList) {
   let childList = [],
@@ -203,18 +204,7 @@ export function cloneList(tarList: VList, list: VList) {
         }
       }
     })
-    
   }, 0);
-}
-
-/**
- * @description 队列表进行插入属性
- * @param {*} conObj 容器的contain属性或者根目录，即VList
- */
-export function componentListMixin(conObj: VList) {
-  svgComponentOption.forEach((value) => {
-    conObj[value] = [];
-  });
 }
 
 /**
@@ -256,4 +246,61 @@ export function deleteFromList(list: Array<VItem>) {
  */
 export function listHasTC(type: string, list: VList) {
   return list[type].length !== 0;
+}
+
+/**
+ * @description 拖拽完毕后，将列表中的目标元素进行更新，这里的操作只是对target进行更新，不涉及节点的移动。
+ * 节点的移动是在domOperate的工具文件的toContainer中进行的。
+ * @param {Array} list 列表
+ * @param {Dom} target dom节点
+ */
+export function renewList(list: VList, target: any) {
+  let { id: ID } = getTypeAndID(target),
+      { x: targetX, y: targetY } = getTransform(target),
+      { width, height } = getSvgWH(target);
+  
+  svgComponentOption.forEach((value) => {
+    for (let i = 0; i < list[value].length; i++) {
+      if (list[value][i].id === ID) {
+        list[value][i].x = targetX;
+        list[value][i].y = targetY;
+        list[value][i].width = width;
+        list[value][i].height = height;
+        break;
+      }
+      if (list[value][i].contain) {
+        // 递归遍历整个列表
+        renewList(list[value][i].contain, target);
+      }
+    }
+  });
+}
+
+/**
+ * 
+ * @param {*} list 
+ */
+export function renewAllList(list: VList) {
+  let keys = Object.keys(list);
+
+  for (let i = 0; i < keys.length; i++) {
+    if (svgComponentOption.indexOf(keys[i]) == -1) {
+      continue;
+    }
+    for (let j = 0; j < list[keys[i]].length; j++) {
+      let target = $('#' + list[keys[i]][j].id)[0],
+          { width, height } = getSvgWH(target),
+          { x, y } = getTransform(target);
+
+          list[keys[i]][j].width = width;
+          list[keys[i]][j].height = height;
+          list[keys[i]][j].x = x;
+          list[keys[i]][j].y = y;
+
+          if (list[keys[i]][j].contain) {
+            // 递归遍历整个列表
+            renewAllList(list[keys[i]][j].contain);
+          }
+    }
+  }
 }

@@ -1,12 +1,12 @@
 export interface VItem {
   [index: string]: any;
   
-  id: String;
-  x: Number;
-  y: Number;
-  width: Number;
-  height: Number;
-  type: String;
+  id: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  type: string;
   value: Array<any>;
 }
 
@@ -17,5 +17,5 @@ export interface ConItem extends VItem {
 }
 
 export interface ChildItem extends VItem {
-  func: String;
+  func: string;
 }
