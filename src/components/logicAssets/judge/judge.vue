@@ -159,6 +159,7 @@ import { VList } from '@/utils/interface/VList';
 import { createModelMixin, eventMixin, componentListMixin } from '@/utils/mixin/mixin'
 
 @Component({
+  name: 'judge',
   components: {
     noRefFunc,
     condition,

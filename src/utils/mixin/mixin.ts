@@ -17,6 +17,7 @@ export function eventMixin(this: any) {
     event.stopPropagation();
     event.preventDefault();
     this.$store.state.moveTarget = this.$el;
+    console.log(this.$store.state.moveTarget)
     if (isSvgContainer(this.$el)) {
       // 容器在点击的时候，会默认选择该容器去作为上传代码的容器
       this.$store.state.choiceTarget = this.$el;

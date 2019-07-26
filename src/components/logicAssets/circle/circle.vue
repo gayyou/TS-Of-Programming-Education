@@ -151,6 +151,7 @@ import inOrder from '../inOrder/inOrder.vue'
 import { VList } from '@/utils/interface/VList';
 
 @Component({
+  name: 'circles',
   components: {
     noRefFunc,
     condition,
@@ -166,7 +167,7 @@ import { VList } from '@/utils/interface/VList';
 export default class Circles extends Vue {
   @Prop(Boolean) model!: boolean;
 
-  @Prop(Array) value!: Array<any>;
+  @Prop(Array) value!: Array<any> | string;
 
   @Prop(Number) y!: number;
 

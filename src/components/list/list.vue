@@ -1,5 +1,43 @@
-<style lang="scss" scoped>
 
+<style lang="scss" scoped>
+.left-list {
+  font-family: 'HYZhuZiMuTouRen';
+  background-color: #373F53;
+  color: #fff;
+  padding-top: 0.5rem;
+
+  li {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 0.78rem;
+    font-size: 0.24rem;
+    margin-top: 0.25rem;
+
+    span {
+      display: block;
+      line-height: 0.78rem;
+    }
+  }
+
+  li:hover {
+    background-color: rgba($color: #fff, $alpha: .1);
+  }
+
+  .list-active {
+    background-color: rgba($color: #fff, $alpha: .1);
+  }
+
+
+  .list-circle {
+    width: 0.16rem;
+    height: 0.16rem;
+    border-radius: 50%;
+    margin-right: 0.15rem;
+  }
+}
 </style>
 
 <template>

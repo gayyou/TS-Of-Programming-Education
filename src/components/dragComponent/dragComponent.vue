@@ -69,7 +69,7 @@
         :value="item.value"
         :model="false"
       ></refFunc>
-      <!-- <inOrder
+      <inOrder
         v-for="item in $store.state.canvasList.inOrder"
         :key="item.id"
         :containObject="item.contain"
@@ -80,7 +80,7 @@
         :model="false"
         :svgOptions="item.svgOptions"
       >
-      </inOrder> -->
+      </inOrder>
       <circles
         v-for="item in $store.state.canvasList.circle"
         :key="item.id"
@@ -324,7 +324,7 @@
         :model="true"
         :y="40"
         :x="20"
-        :value="'循环'"
+        :value="['循环']"
         :containObject="{}"
         :svgOptions="{
           firstBash: 36
@@ -334,7 +334,7 @@
         :model="true"
         :y="160"
         :x="20"
-        :value="'判断'"
+        :value="['判断']"
         :containObject="{}"
         :svgOptions="{
           firstBash: 24,
@@ -401,8 +401,6 @@
         :y="$store.state.model.y"
         :x="$store.state.model.x"
       ></condition>
-
-
     </svg>
     <svg xmlns="http://www.w3.org/2000/svg" width="3.66rem" height="100%" id="model-container"
       v-if="$store.state.leftStatus === 4"
@@ -704,14 +702,6 @@ export default class DragComponent extends Vue {
     console.log(item);
     // let newArr = [];
     item.value[1][index] = parseInt((<HTMLInputElement>$('.global-input input')[0]).value);
-    // item.value[1].push('');
-    // item.value[1].pop();
-    // this.$store.state.isRenew = !this.$store.state.isRenew
-    // for (let i = 0; i < list[type].length; i++) {
-    //   if (id == list[type][i].id) {
-    //     list[type][i].value[index] = $('.global-input input')[0].value;
-    //   }
-    // }
     (<any>target.getElementsByClassName('text')[index].firstChild).nodeValue = (<HTMLInputElement>$('.global-input input')[0]).value;
   }
 }

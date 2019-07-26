@@ -5,14 +5,20 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import leftList from '../components/list/list.vue'
 import drag from '../components/dragComponent/dragComponent.vue'
-export default {
+import Component from 'vue-class-component';
+
+@Component({
   components: {
     'left-list': leftList,
     'svg-canvas': drag,
   }
+})
+export default class Index extends Vue {
+
 }
 </script>
 
