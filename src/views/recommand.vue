@@ -2,14 +2,19 @@
   <recommand class="recommand"></recommand>
 </template>
 
-<script>
-// @ is an alias to /src
-import recommand from '../components/recommand/recommand.vue'
+<script lang="ts">
+import Vue from 'vue'
 
-export default {
+import recommand from '../components/recommand/recommand.vue'
+import Component from 'vue-class-component';
+
+@Component({
   components: {
     recommand
   }
+})
+export default class Recommand extends Vue {
+  
 }
 </script>
 

@@ -327,6 +327,7 @@ export default class Header extends Vue {
         id: 12,
         program: result
       }
+      console.log(send.program)
       this.$http
         .post('/user/program', send)
         .then((res: any) => {

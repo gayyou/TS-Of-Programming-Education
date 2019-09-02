@@ -2,10 +2,10 @@
   <div id="app">
     <head-nav></head-nav>
     <div class="main">
-      <!-- <recommand
+      <recommand
         class="recommand"
         :style="!$store.state.isCode ? 'z-index: 1' : 'z-index: 0'"
-      ></recommand> -->
+      ></recommand>
       <index
         class="index"
         :style="$store.state.isCode ? 'z-index: 1' : 'z-index: 0'"
@@ -23,7 +23,7 @@ import headNav from './components/header/header.vue'
 import leftList from './components/list/list.vue'
 // import svgCanvas from './components/svgCanvas/svgCanvas.vue'
 import loading from './components/loading/loading.vue'
-// import recommand from './views/recommand.vue'
+import recommand from './views/recommand.vue'
 import floatLayer from './components/floatLayer/floatLayer.vue'
 import index from './views/index.vue'
 
@@ -36,7 +36,7 @@ export default Vue.extend({
     'head-nav': headNav,
     'left-list': leftList,
     // 'svg-canvas': drag,
-    // recommand,
+    recommand,
     loading,
     'float-layer': floatLayer
   }

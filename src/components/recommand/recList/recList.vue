@@ -13,16 +13,25 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import Component from 'vue-class-component';
 import svgComponent from '../../mainComponent/mainComponent.vue'
-export default {
+import { Prop } from 'vue-property-decorator';
+
+@Component({
   components: {
     svgComponent
-  },
-  props: ['name', 'point', 'svgList', 'index'],
-  mounted() {
-    console.log(this.svgList);
   }
+})
+export default class RecList extends Vue {
+  @Prop() name!: any;
+
+  @Prop() point!: any;
+
+  @Prop() svgList!: any;
+
+  @Prop() index!: any;
 }
 </script>
 
