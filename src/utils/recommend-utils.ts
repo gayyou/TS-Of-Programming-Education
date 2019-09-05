@@ -7,14 +7,14 @@ export function getSvgCenterPosi(container: any) {
       targetConfig = containG.getBBox(),
       tarW: number = targetConfig.width,
       tarH: number = targetConfig.height;
-    let scales;
+  let scales;
 
   if (tarH > conH) {
     scales = conH / (tarH) * 0.9;
   } else {
     scales = tarH / (conH) * 0.9;
   }
-   
+
   tarW = tarW * scales;
   tarH = tarH * scales;
 

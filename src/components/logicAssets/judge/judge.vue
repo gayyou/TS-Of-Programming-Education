@@ -214,7 +214,10 @@ export default class Judge extends Vue {
       createModelMixin.call(this)
     } else {
       eventMixin.call(this);
-      componentListMixin(this.containObject);
+      // 这个判断是为了防止推荐模式中将data-to-view的时候错误地重新初始化
+      if (Object.keys(this.containObject).length == 0) {
+        componentListMixin(this.containObject);
+      }
       this.$nextTick(() => {
         // 等待下一个事件循环的时候进行引用的指向
         this.$data.contain = this.containObject;

@@ -1,4 +1,6 @@
 import { renewWhileOption, renewJudgeOption } from '../svg-operate/options';
+import { getVList } from './get-instance';
+import { Container } from 'element-ui';
 
 /**
  * 
@@ -70,12 +72,71 @@ function getRecID() {
   return 'recEl' + count++;
 }
 
+
+let a = {
+  "type": "while",
+  "tab": "1",
+  "ops": null,
+  "condition": "True",
+  "children": [
+      {
+          "type": "if",
+          "tab": "2",
+          "ops": null,
+          "condition": "前方有障碍物",
+          "children": [
+              {
+                  "type": null,
+                  "tab": "3",
+                  "ops": "move_arm_right(1)",
+                  "condition": "",
+                  "children": null
+              },
+              {
+                  "type": "while",
+                  "tab": "3",
+                  "ops": null,
+                  "condition": "x < 10",
+                  "children": [
+                      {
+                          "type": null,
+                          "tab": "4",
+                          "ops": "move_arm_right(1)",
+                          "condition": "",
+                          "children": null
+                      }
+                  ]
+              },
+              {
+                  "type": "else",
+                  "tab": "2",
+                  "ops": null,
+                  "condition": "",
+                  "children": [
+                      {
+                          "type": null,
+                          "tab": "3",
+                          "ops": "move_arm_right(1)",
+                          "condition": "",
+                          "children": null
+                      }
+                  ]
+              }
+          ]
+      }
+  ]
+}
+console.log(123)
+console.log(dataToView(a))
 /**
  *
  * @param {} advice 
  */
 export function dataToView(advice: any) {
-  return viewItem(advice, 1);
+  let contain = getVList();
+  contain.circle.push(viewItem(advice, 1));
+  return contain;
+  // return viewItem(advice, 1);
 }
 
 /**
@@ -85,7 +146,7 @@ export function dataToView(advice: any) {
  */
 function viewItem(codeItem: any, posiY: number) {
   let keys = Object.keys(funcMountCom),
-      type: string = codeItem.type,
+      type: any = codeItem.type ? codeItem.type : null,
       func: string = codeItem.ops !== null ? codeItem.ops.split('(')[0] : null,
       param: any = codeItem.ops !== null ? codeItem.ops.split('(')[1].split(')')[0].split(',') : null,
       viewName: string = '',
@@ -128,13 +189,16 @@ function viewItem(codeItem: any, posiY: number) {
     type: viewName,
     // value: value,
     y: posiY,
+    x: 0,
     svgOptions: createOption(type),
-    hasCdn: 'getCdnName(codeItem)',
+    hasCdn: false,
     contain: codeItem.children.length ? getChildren(codeItem) : null
   } : {
+    type: viewName,
     id: getRecID(),
     func: func,
     y: posiY,
+    x: 1,
     value: [blockText, param],
   }
 }
@@ -143,29 +207,35 @@ function viewItem(codeItem: any, posiY: number) {
  * @TODO 定义一个codeItem的接口
  * @param codeItem 
  */
-function getChildren(codeItem: any) {
-  let getWhile = (codeItem: any) => {
+function getChildren(codeItem: any): any {
+  let getWhile = (codeItem: any): any => {
     let y = 0.1,
-        resultArr = [];
-    for (let i = 0; codeItem.children.length; i++) {
-      console.log(codeItem)
-      resultArr.push(viewItem(codeItem.children[i], 0.1));
+        resultContain = getVList();
+    for (let i = 0; i < codeItem.children.length; i++) {
+      let temp = viewItem(codeItem.children[i], 0.1 + y);
+      resultContain[temp.type].push(temp);
       y += 0.1;
     }
+
+    return resultContain;
   }
 
-  let getJudge = (codeItem: any) => {
+  let getJudge = (codeItem: any): any => {
     let y = 0.1,
-        resultArr: any[] = [];
-    for (let i = 0; codeItem.children.length; i++) {
+        resultContain = getVList();
+    for (let i = 0; i < codeItem.children.length; i++) {
       if (codeItem.children[i].type == 'else') {
-        resultArr = [...resultArr, viewItem(codeItem.children[i], y + renewJudgeOption.textBash).contain];
+        let temp = viewItem(codeItem.children[i], y + renewJudgeOption.textBash).contain;
+        for (let item in temp) {
+          resultContain[item] = [...resultContain[item], ...temp[item]];
+        }
       } else {
-        resultArr.push(viewItem(codeItem.children[i], y + renewJudgeOption.textBash));
+        let temp = viewItem(codeItem.children[i], y + renewJudgeOption.textBash);
+        resultContain[temp.type].push(temp);
       }
       y += 0.1;
     }
-    return resultArr;
+    return resultContain;
   }
 
   switch(codeItem.type) {
@@ -173,11 +243,17 @@ function getChildren(codeItem: any) {
       return getJudge(codeItem)
     }
 
+    case 'else': {
+      return getJudge(codeItem)
+    }
+
     case 'while': {
       return getWhile(codeItem)
     }
 
-    default: console.log('错误')
+    default: {
+      console.log('错误')
+    }
   }
 }
 

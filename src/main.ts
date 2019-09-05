@@ -16,7 +16,8 @@ axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? '' : 'http://q
 
 declare global {
   interface Window {
-    $: any
+    $: any,
+    vue: any
   }
   interface Vue {
     $: any
@@ -32,7 +33,7 @@ declare module 'vue/types/vue' {
 window.$ = jquery;
 Vue.prototype.$http = axios;
 
-new Vue({
+window.vue = new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')

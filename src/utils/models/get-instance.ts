@@ -3,7 +3,7 @@ import { VItem } from '../interface/VItem';
 
 // 有类型的数据初始化的时候很麻烦，这里就直接调用这个函数进行数据的初始化
 
-export const getVList = (): VList => {
+export const getVList = (): VList | any => {
   return {
     // 下面是组件
     condition: [],
@@ -22,7 +22,7 @@ export const getVList = (): VList => {
   }
 }
 
-export const getConItem = (): VItem => {
+export const getConItem = (): VItem | any => {
   return {
     id: '',
     x: NaN,

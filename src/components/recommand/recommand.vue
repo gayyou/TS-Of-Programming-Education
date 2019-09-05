@@ -35,6 +35,8 @@ import Component from 'vue-class-component';
 import PubSub from "pubsub-js";
 import recList from "./recList/recList.vue";
 import { cloneList } from '@/utils/shared/vlist-utils';
+import { dataToView } from '@/utils/models/data-to-view';
+import { adjustRecommandSvgOperate } from '@/utils/svg-operate/dom-operate';
 
 @Component({
   components: {
@@ -55,10 +57,16 @@ export default class RecommandPage extends Vue {
   ];
 
   mounted() {
-    this.list.push({
+    let obj = {"condition":[],"order":[],"assist":[],"noRefFunc":[],"refFunc":[],"doubleRef":[],"longRefFunc":[],"longRightRef":[],"inOrder":[],"circle":[{"id":"recEl0","type":"circle","y":1,"x":0,"svgOptions":{"firstBash":36,"currentY":48},"hasCdn":false,"contain":{"condition":[],"order":[],"assist":[],"noRefFunc":[],"refFunc":[],"doubleRef":[],"longRefFunc":[],"longRightRef":[],"inOrder":[],"circle":[],"judge":[{"id":"recEl1","type":"judge","y":0.2,"x":0,"svgOptions":{"firstBash":24,"secondBash":-16,"textBash":100.3763,"currentY":48,"firstTime":1,"currentSecondY":120},"hasCdn":false,"contain":{"condition":[],"order":[],"assist":[],"noRefFunc":[],"refFunc":[],"doubleRef":[],"longRefFunc":[],"longRightRef":[{"type":"longRightRef","id":"recEl2","func":"move_arm_right","y":100.4763,"x":1,"value":[["机械臂向左摆动","度"],["1"]]},{"type":"longRightRef","id":"recEl6","func":"move_arm_right","y":100.4763,"x":1,"value":[["机械臂向左摆动","度"],["1"]]}],"inOrder":[],"circle":[{"id":"recEl3","type":"circle","y":100.5763,"x":0,"svgOptions":{"firstBash":36,"currentY":48},"hasCdn":false,"contain":{"condition":[],"order":[],"assist":[],"noRefFunc":[],"refFunc":[],"doubleRef":[],"longRefFunc":[],"longRightRef":[{"type":"longRightRef","id":"recEl4","func":"move_arm_right","y":0.2,"x":1,"value":[["机械臂向左摆动","度"],["1"]]}],"inOrder":[],"circle":[],"judge":[]}}],"judge":[]}}]}}],"judge":[]}
+    let item = {
       id: "123",
-      contain: JSON.parse('{"type":"if","tab":0,"ops":null,"condition":"True","children":[{"type":"","tab":1,"ops":"move_ahead(0,0)","condition":null,"children":[]},{"type":"if","tab":1,"ops":null,"condition":"order","children":[{"type":"","tab":2,"ops":"move_ahead(0,0)","condition":null,"children":[]},{"type":"else","tab":1,"ops":null,"condition":null,"children":[{"type":"","tab":2,"ops":"move_left(0,0)","condition":null,"children":[]}]}]}]}')
+      contain: obj
+    }
+    this.list.push(item)
+    this.$nextTick(() => {
+      adjustRecommandSvgOperate(item.contain);
     })
+    dataToView;
   }
 
   recommandToMain(e: any, data: any) {

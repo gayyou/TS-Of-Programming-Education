@@ -3,6 +3,7 @@ import { getTypeAndID, insertSort } from '../shared/common-utils';
 import { getTotalPosi, cloneSvgInfo, cloneList, findItem } from '../shared/vlist-utils';
 import { isSvgContainer, getSvgWH, getTransform } from '../shared/svg-utils';
 import { VItem } from '../interface/VItem';
+import { judgeOption, whileOption } from './options';
 
 /**
  * @author Weybn
@@ -74,6 +75,7 @@ function echangePosi(this: any, item: VItem) {
  * @param {*} target 正在拖拽的目标
  * @param {*} conList 拖拽目标所在容器列表
  * @param {Dom} conTarget 拖拽目标的容器
+ * @param {Object} options svg更改的配置
  */
 export function adjustSvgPosi(this: any, target: any, conList: VList, options: any, conTarget: any) {
   let childList = [],
@@ -129,61 +131,163 @@ export function adjustSvgPosi(this: any, target: any, conList: VList, options: a
   }
 }
 
-// export function addShadow(conTarget, conList) {
-//   let keys = Object.keys(conList),
-//       childList = [],
-//       options = null,
-//       { id: conID, type: conType } = getTypeAndID(conTarget);
+/**
+ * @author Weybn
+ * @time 2019-09-05
+ * @description 调整推荐页面列表中的svg块的顺序及位置
+ * @param {VList} list svg存放的List
+ */
+export function adjustRecommandSvgOperate(list: any) {
+  debugger
+  preResolve(list);
+  for (let item in list) {
+    if (isSvgContainer(item)) {
+      for (let i = 0; i < list[item].length; i++) {
+        adjustRecommandSvgOperate(list[item][i].contain);
+      }
+      recommandSvgAdjust(item);
+    }
+  }
+}
 
-//   switch(conType) {
-//     case 'circle': {
-//       options = whileOption; 
-//       break;
-//     }
+function preResolve(list: VList) {
+  for (let item in list) {
+    for (let i = 0; i < list[item].length; i++) {
+      let element = list[item][i];
+      element.height = getSvgWH($('#' + element.id)[0]).height;
+      if (isSvgContainer(element.type)) {
+        preResolve(element.contain);
+      }
+    }
+  }
+}
 
-//     case 'inOrder': {
-//       options = whileOption; 
-//       break;
-//     }
+function recommandSvgAdjust(conItem: any) {
+  let childList = [],
+      list = conItem.contain,
+      conType = conItem.type;
+  
+  let keys = Object.keys(list);
+  // 获得所有子节点
+  for (let i = 0; i < keys.length; i++) {
+    for (let j = 0; j < list[keys[i]].length; j++) {
+      childList.push(list[keys[i]][j]);
+    }
+  }
+
+  insertSort(childList); // 排序
+
+  switch(conType) {
+    case 'judge': {
+      recAdjustJudge(conItem, childList);
+      break;
+    }
+
+    case 'circle': {
+      recAdjustWhile(conItem, childList);
+      break;
+    }
+  }
+}
+
+function recAdjustJudge(conItem: any, childList: Array<any>) {
+  let options = judgeOption,
+      bashX = options.bashX,
+      bash1Y = options.bashY,
+      bash2Y = options.bashSecondY - 24,
+      bashTextY = options.elseText.bash,
+      firstBash = options.firstBash,
+      secondBash = options.secondBash,
+      secFlag = false,
+      firstFlag = false,
+      ifElseLine = conItem.svgOptions.textBash,
+      item = conItem;
+
+  for (let i = 0; i < childList.length; i++) {
+    if (childList[i].type == 'condition') {
+      continue;
+    }
+    childList[i].x = bashX;
+
+    if (childList[i].y < ifElseLine) {
+      firstFlag = true;
+      childList[i].y = bash1Y;
+      bash2Y += childList[i].height;
+      bash1Y += childList[i].height;
+      bashTextY += childList[i].height;
+      firstBash += childList[i].height;
+    } else {
+      secFlag = true;
+      childList[i].y = bash2Y;
+      bash2Y += childList[i].height;
+      secondBash -= childList[i].height;
+      firstBash += childList[i].height;
+    }
+  }
+
+  firstBash -= 24;
+  bashTextY -= 23.5;
+
+  if (!firstFlag) {
+    firstBash += options.firstBash;
+    bashTextY = options.elseText.bash;
+
+    for (let i = 0; i < childList.length; i++) {
+      if (childList[i].type == 'condition') {
+        continue;
+      }
+      childList[i].y += options.firstBash + 0.5;
+    }
+  }
+
+  if (secFlag) {
+    // secondBash += 23.5;
+    secondBash += 23.5;
+    firstBash -= 23.5;
+  } else {
     
-//     case 'judge': {
-//       options = judgeOption;
-//       break;
-//     }
-//   }
+  }
+  
+  item.svgOptions.firstBash = firstBash;
+  item.svgOptions.secondBash = secondBash;
+  item.svgOptions.textBash = bashTextY;
+}
 
-//   for (let i = 0; i < keys.length; i++) {
-//     if (keys[i] == 'shadow') {
-//       if (conList[keys[i]] == null) {
-//         continue;
-//       }
-//       let shadowKey = Object.keys(conList[keys[i]])[0];
-//       if (conList[keys[i]]) {
-//         let shadow = $('#' + shadowKey + 'Sha')[0];
-//         let { height, width } = getSvgWH(shadow);
-//         childList.push({
-//           y: conList[keys[i]][shadowKey].y,
-//           height,
-//           width,
-//           x: 24
-//         })
-//       }
-//       continue;
-//     }
-//     for (let j = 0; j < conList[keys[i]].length; j++) {
-//       childList.push(conList[keys[i]][j]);
-//     }
-//   }
+function recAdjustWhile(item: any, childList: Array<any>) {
+  let options = whileOption,
+      bashX = options.bashX,
+      bashY = options.bashY,
+      currentBash = 24;
 
-//   insertSort(childList); // 排序
+  for (let i = 0; i < childList.length; i++) {
+    if (childList[i].type == 'condition') {
+      continue;
+    }
+    // 重新更新
+    childList[i].x = bashX;
+    childList[i].y = bashY;
 
-//   if (conType == 'judge') {
-//     adjustJudge.call(this, childList, conTarget, options)
-//   } else {
-//     // 对circle的调整
-//     adjustWhile.call(this, childList, conTarget, options);
-//   }
-// }
+    bashY += childList[i].height;
+
+    if (currentBash <= options.firstBash + 12) {
+      // 第一次的时候，因为会有空隙，所以while循环块的扩大会比目标的height还要大出12
+      currentBash = childList[i].height + 12;  // 这个12是通过试验得出的。
+    } else {
+      // 第二次及以后，则直接加上increationY这么大
+      
+      currentBash = childList[i].height + currentBash;
+    }
+  }
+
+  if (currentBash == 24) {
+    currentBash += 12;
+  }
+
+  item.svgOptions = {
+    firstBash: currentBash,
+    currentY: bashY
+  }
+}
 
 function adjustWhile(this: any, childList: Array<VItem>, conTarget: any, options: any) {
   let bashX = options.bashX,
