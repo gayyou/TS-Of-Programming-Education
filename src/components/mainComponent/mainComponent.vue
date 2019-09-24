@@ -207,7 +207,7 @@ export default class MainComponent extends Vue {
       let { x, y, scales } = result;
 
       container.getElementsByTagName('g')[0].setAttribute('transform', 'translate(' + x + ',' + y + ') scale(' + scales + ')');
-    }, 10);
+    }, 100);
   }
 }
 </script>

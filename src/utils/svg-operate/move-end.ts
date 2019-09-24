@@ -17,6 +17,7 @@ export function changeSvgPosi(this: any, target: any) {
     // setTimeout(() => {
     //   renewList(conList, target);
     // }, 0);
+
   }
 }
 
@@ -39,10 +40,10 @@ export function changeSvgNest(this: any, target: any, crashResult: any, event: a
   if (toConList == this.$store.state.canvasList) {
     // 这个是分裂
     let mousePayload = {
-          x: event.clientX,
-          y: event.clientY
-        },
-        toTalObj = getTotalPosi(target, this.$store.state.canvasList);
+      x: event.clientX,
+      y: event.clientY
+    },
+    toTalObj = getTotalPosi(target, this.$store.state.canvasList);
     setTransform(target, toTalObj);  // 进行设置目标的位置，防止发生抖动
     spiltOperate.call(this, target, $(target).parent()[0], mousePayload);  // 进行更改分裂操作
   } else {

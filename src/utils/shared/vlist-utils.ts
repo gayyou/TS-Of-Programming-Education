@@ -86,7 +86,7 @@ export function findList(target: any, listObj: VList): any {
 
   // 查找target是否在这个list对象中
   result = isInList(target, listObj);
-  if (result == true) {
+  if (result) {
     return listObj;
   }
 
@@ -121,8 +121,8 @@ export function isInList (target: any, TarListObj: VList) {
 
   let { id, type }: any = getTypeAndID(target);
 
-  if (TarListObj[type].length === 0) {
-    return ;
+  if (TarListObj[type].length == 0) {
+    return false;
   }
 
   for (let i = 0; i < TarListObj[type].length; i++) {

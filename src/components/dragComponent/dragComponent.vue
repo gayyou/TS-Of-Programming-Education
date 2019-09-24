@@ -168,6 +168,34 @@
       <g transform="translate(12,0)" display="block" id="move-operate">
         <text class="operate-title" x="20" y="20" text-anchor="middle" dominant-baseline="central" dy="0">功能</text>
       </g>
+      <longRightRef
+        :model="true"
+        :value="[['向前移动', '步'], [0]]"
+        :y="40"
+        :x="20"
+        :func="'move_arm_high_up'"
+      ></longRightRef>
+      <longRightRef
+        :model="true"
+        :value="[['向后移动', '步'], [0]]"
+        :y="110"
+        :x="20"
+        :func="'move_arm_high_up'"
+      ></longRightRef>
+      <longRightRef
+        :model="true"
+        :value="[['向左转动', '度'], [0]]"
+        :y="180"
+        :x="20"
+        :func="'move_arm_high_up'"
+      ></longRightRef>
+      <longRightRef
+        :model="true"
+        :value="[['向右转动', '度'], [0]]"
+        :y="250"
+        :x="20"
+        :func="'move_arm_high_up'"
+      ></longRightRef>
       <!-- <noRefFunc
         :model="true"
         :value="'向前移动'"
@@ -191,7 +219,7 @@
         :y="180"
         :x="20"
       ></noRefFunc> -->
-      <doubleRef
+      <!-- <doubleRef
         :model="true"
         :value="[['向前移动', '速度', '秒'], [0, 0]]"
         :y="40"
@@ -232,7 +260,7 @@
         :y="390"
         :x="20"
         :func="'set_low'"
-      ></longRefFunc>
+      ></longRefFunc> -->
       <!-- <order
         :model="true"
         :value="[['向前', '步'], [1]]"
@@ -277,6 +305,14 @@
         :y="$store.state.model.y"
         :x="$store.state.model.x"
       ></noRefFunc>
+      <longRightRef
+        id="fake-longRightRef"
+        v-if="$store.state.model.type === 'longRightRef'"
+        :model="true"
+        :value="$store.state.model.value"
+        :y="$store.state.model.y"
+        :x="$store.state.model.x"
+      ></longRightRef>
       <!-- <order
         id="fake-order"
         v-if="$store.state.model.type === 'order'"
@@ -394,6 +430,18 @@
         :x="20"
       ></condition>
       <condition
+        :model="true"
+        :value="[['前方有障碍物'], ['order']]"
+        :y="100"
+        :x="20"
+      ></condition>
+      <!-- <condition
+        :model="true"
+        :value="[[''], ['order']]"
+        :y="160"
+        :x="20"
+      ></condition> -->
+      <condition
         id="fake-condition"
         v-if="$store.state.model.type === 'condition'"
         :model="true"
@@ -408,19 +456,19 @@
       <g transform="translate(12,0)" display="block" id="move-operate">
         <text class="operate-title" x="20" y="20" text-anchor="middle" dominant-baseline="central" dy="0">辅助</text>
       </g>
-      <!-- <assist
+      <assist
         :model="true"
-        :value="'抬起机械臂'"
+        :value="[['连接机器人'], []]"
         :y="40"
         :x="20"
       ></assist>
       <assist
         :model="true"
-        :value="'放下机械臂'"
+        :value="[['松开机器人'], []]"
         :y="110"
         :x="20"
-      ></assist> -->
-      <assist
+      ></assist>
+      <!-- <assist
         :model="true"
         :value="[['合并机械臂'], []]"
         :y="40"
@@ -433,7 +481,7 @@
         :y="110"
         :x="20"
         :func="'open_arm'"
-      ></assist>
+      ></assist> -->
       <order
         :model="true"
         :value="[['延时', '秒'], [0]]"
@@ -442,7 +490,7 @@
         :func="'delay_ms'"
       >
       </order>
-      <longRightRef
+      <!-- <longRightRef
         :model="true"
         :value="[['机械上臂向上摆动', '度'], [0]]"
         :y="250"
@@ -483,7 +531,7 @@
         :y="600"
         :x="20"
         :func="'move_arm_right'"
-      ></longRightRef>
+      ></longRightRef> -->
       <assist
         id="fake-assist"
         v-if="$store.state.model.type === 'assist'"
@@ -492,14 +540,14 @@
         :y="$store.state.model.y"
         :x="$store.state.model.x"
       ></assist>
-      <longRightRef
+      <!-- <longRightRef
         id="fake-longRightRef"
         v-if="$store.state.model.type === 'longRightRef'"
         :model="true"
         :value="$store.state.model.value"
         :y="$store.state.model.y"
         :x="$store.state.model.x"
-      ></longRightRef>
+      ></longRightRef> -->
       <order
         id="fake-order"
         v-if="$store.state.model.type === 'order'"

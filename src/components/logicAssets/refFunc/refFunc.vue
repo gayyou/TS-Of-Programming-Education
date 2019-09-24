@@ -30,7 +30,7 @@
         <tspan
            id="tspan7"
            y="0"
-           x="0">{{ value }}</tspan>
+           x="0">{{ value[0] }}</tspan>
       </text>
       <rect
          transform="translate(217,571)"

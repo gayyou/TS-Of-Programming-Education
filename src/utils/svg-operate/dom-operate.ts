@@ -131,21 +131,54 @@ export function adjustSvgPosi(this: any, target: any, conList: VList, options: a
   }
 }
 
+export function adjustRecommandSvgOperateRoot(this: any, list: any) {
+  let rootContainerList: Array<any> = [];
+  preResolve(list);
+  adjustRecommandSvgOperate(list, rootContainerList);
+  console.log(rootContainerList)
+  svgAdjustOneByOne.call(this, rootContainerList, rootContainerList.length - 1);
+}
+
+/**
+ * 
+ * @param this 
+ * @param containerList 
+ * @param index 下标，这个下标是从后往前进行遍历的，所以截止的条件是为大于0 
+ */
+function svgAdjustOneByOne(this: any, containerList: Array<any>, index: number) {
+  new Promise(resovle => {
+    // 在这里使用nextTick这个方法的目的是为了进行更新视图层
+    this.$nextTick(() => {
+      recommandSvgAdjust(containerList[index]);
+      this.$nextTick(() => {
+        // 等到视图更新完毕后再进行更新数据
+        containerList[index].height = getSvgWH($('#' + containerList[index].id)[0]).height;
+        this.$nextTick(() => {
+          // 进行下一步操作
+          resovle();
+        })
+      })
+    })
+  }).then(() => {
+    if (index > 0) {
+      svgAdjustOneByOne.call(this, containerList, index - 1);
+    }
+  })
+}
+
 /**
  * @author Weybn
  * @time 2019-09-05
  * @description 调整推荐页面列表中的svg块的顺序及位置
  * @param {VList} list svg存放的List
  */
-export function adjustRecommandSvgOperate(list: any) {
-  debugger
-  preResolve(list);
+function adjustRecommandSvgOperate(list: any, rootConArr: Array<any>) {
   for (let item in list) {
     if (isSvgContainer(item)) {
       for (let i = 0; i < list[item].length; i++) {
-        adjustRecommandSvgOperate(list[item][i].contain);
+        rootConArr.push(list[item][i]);
+        adjustRecommandSvgOperate(list[item][i].contain, rootConArr);
       }
-      recommandSvgAdjust(item);
     }
   }
 }

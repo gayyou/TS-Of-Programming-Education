@@ -291,13 +291,20 @@ $bgColor: #ED775A;
 import Vue from 'vue'
 import PubSub from 'pubsub-js'
 import { findItem } from '@/utils/shared/vlist-utils'
-import { checkData } from '@/utils/shared/common-utils'
+import { checkData, getTypeAndID } from '@/utils/shared/common-utils'
 import { formatData } from '@/utils/models/view-to-data'
 import Component from 'vue-class-component';
 
 @Component
 export default class Header extends Vue {
   mounted() {
+
+  }
+  
+  /**
+   * @description 更新操作
+   */
+  update() {
     let token = PubSub.subscribe('update', (e: any, data: any) => {
       if (data.cancel == true) {
         return ;
@@ -309,43 +316,43 @@ export default class Header extends Vue {
         return ;
       }
 
-      let item = findItem(this.$store.state.choiceTarget, this.$store.state.canvasList);
-      let result = formatData(item);
-      
-      if (checkData(result) == false) {
-        this.$store.state.message = '请添加条件'
+      setTimeout(() => {
+        this.$store.state.message = '成功提交编程方案，正在给机器人下发指令，请注意机器人的行为！'
         this.$store.state.showMessage = true;
-          return ;
-      }
+      }, 1000);
+      
 
-      if (result.type == 'while') {
-        result.type = 'if';
-        result.condition = 'True';
-      }
+      let item = findItem(this.$store.state.choiceTarget, this.$store.state.canvasList);
+      console.log(item)
+      // let result = formatData(item);
+      
+      // if (checkData(result) == false) {
+      //   this.$store.state.message = '请添加条件'
+      //   this.$store.state.showMessage = true;
+      //     return ;
+      // }
 
-      let send = {
-        id: 12,
-        program: result
-      }
-      console.log(send.program)
-      this.$http
-        .post('/user/program', send)
-        .then((res: any) => {
-          let data = res.data;
-          if (data.code == '200') {
-            this.$store.state.message = '成功提交编程方案，正在给机器人下发指令，请注意机器人的行为！'
-            this.$store.state.showMessage = true;
-          }
-        })
-      // console.log(requestData)
-      // PubSub.unsubscribe(token);
+      // if (result.type == 'while') {
+      //   result.type = 'if';
+      //   result.condition = 'True';
+      // }
+
+      // let send = {
+      //   id: 12,
+      //   program: result
+      // }
+      // console.log(send.program)
+      // this.$http
+      //   .post('/user/program', send)
+      //   .then((res: any) => {
+      //     let data = res.data;
+      //     if (data.code == '200') {
+      //       this.$store.state.message = '成功提交编程方案，正在给机器人下发指令，请注意机器人的行为！'
+      //       this.$store.state.showMessage = true;
+      //     }
+      //   })
+      PubSub.unsubscribe(token);
     })
-  }
-  
-  /**
-   * @description 更新操作
-   */
-  update() {
     this.$store.state.showConfirm = true;
     this.$store.state.confirmMes = '确定上传点击的积木块？'
   }

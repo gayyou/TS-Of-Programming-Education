@@ -1,6 +1,5 @@
 import { renewWhileOption, renewJudgeOption } from '../svg-operate/options';
 import { getVList } from './get-instance';
-import { Container } from 'element-ui';
 
 /**
  * 
@@ -72,62 +71,6 @@ function getRecID() {
   return 'recEl' + count++;
 }
 
-
-let a = {
-  "type": "while",
-  "tab": "1",
-  "ops": null,
-  "condition": "True",
-  "children": [
-      {
-          "type": "if",
-          "tab": "2",
-          "ops": null,
-          "condition": "前方有障碍物",
-          "children": [
-              {
-                  "type": null,
-                  "tab": "3",
-                  "ops": "move_arm_right(1)",
-                  "condition": "",
-                  "children": null
-              },
-              {
-                  "type": "while",
-                  "tab": "3",
-                  "ops": null,
-                  "condition": "x < 10",
-                  "children": [
-                      {
-                          "type": null,
-                          "tab": "4",
-                          "ops": "move_arm_right(1)",
-                          "condition": "",
-                          "children": null
-                      }
-                  ]
-              },
-              {
-                  "type": "else",
-                  "tab": "2",
-                  "ops": null,
-                  "condition": "",
-                  "children": [
-                      {
-                          "type": null,
-                          "tab": "3",
-                          "ops": "move_arm_right(1)",
-                          "condition": "",
-                          "children": null
-                      }
-                  ]
-              }
-          ]
-      }
-  ]
-}
-console.log(123)
-console.log(dataToView(a))
 /**
  *
  * @param {} advice 

@@ -1,5 +1,5 @@
 <style lang="scss" scoped>
-.st0{fill:#FEDB4C;}
+.st0{fill:#E05857;}
 .st1{fill:#FFFFFF;}
 .st2{font-family:'MicrosoftYaHei';}
 .st3{font-size:18px;}
