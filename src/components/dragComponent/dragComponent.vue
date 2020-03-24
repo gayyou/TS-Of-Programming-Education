@@ -18,7 +18,7 @@
       height="100%"
       version="1.1"
       id="main-svg-container"
-      
+
       inkscape:version="0.92.3 (2405546, 2018-03-11)"
       sodipodi:docname="绘图.svg">
       <sodipodi:namedview
@@ -164,7 +164,7 @@
     <svg xmlns="http://www.w3.org/2000/svg" width="3.66rem" height="100%" id="model-container"
       v-if="$store.state.leftStatus === 1"
     >
-      
+
       <g transform="translate(12,0)" display="block" id="move-operate">
         <text class="operate-title" x="20" y="20" text-anchor="middle" dominant-baseline="central" dy="0">功能</text>
       </g>
@@ -413,7 +413,7 @@
         :svgOptions="{
           firstBash: 36
         }"
-      >  
+      >
       </inOrder>
 
     </svg>
@@ -621,7 +621,7 @@ export default class DragComponent extends Vue {
     let top = event.clientY - this.$store.state.mouse.y + bashY;
     let target = this.$store.state.moveTarget;
     let fakeTarget = this.$store.state.fakeTarget;
-    let num = 'translate(' 
+    let num = 'translate('
               + left
               + ','
               + top
@@ -664,7 +664,8 @@ export default class DragComponent extends Vue {
     let mousePayload = {
       x: event.clientX,
       y: event.clientY
-    }
+    };
+
     if (this.$store.state.moveTarget) {
       let target = this.$store.state.moveTarget;
 
@@ -687,7 +688,7 @@ export default class DragComponent extends Vue {
       }
       // if (result)
       // console.log(result.container.getAttribute('id') != conID)
-      if ((!this.$store.state.fakeTarget && !result && toConList == this.$store.state.canvasList && conList != this.$store.state.canvasList) 
+      if ((!this.$store.state.fakeTarget && !result && toConList == this.$store.state.canvasList && conList != this.$store.state.canvasList)
           // 第一段是没有发生碰撞，并且目标容器是根容器，所在容器并不是根容器，而且不是在创建的时候，即就是在分裂的时候
           // 第二段的是碰撞有结果，并且碰撞对象并不是自己的容器，碰撞结果是一个容器积木块
           || (result && result.container.getAttribute('id') != conID && isSvgContainer(result.container))) {
@@ -703,7 +704,7 @@ export default class DragComponent extends Vue {
       //   // 没有发生碰撞的时候
       //     changeSvgPosi.call(this, target);
       // }
-      
+
 
       this.$nextTick(() => {
         // 寻找并进行删除处于左侧的积木块
@@ -733,11 +734,11 @@ export default class DragComponent extends Vue {
     let data = event.data;
     let pattern = new RegExp(/^[0-9]*$/);
     if (pattern.test(data) == false) {
-      (<HTMLInputElement>$('.global-input input')[0]).value = (<HTMLInputElement>$('.global-input input')[0]).value.slice(0, (<HTMLInputElement>$('.global-input input')[0]).value.length - 1);  
+      (<HTMLInputElement>$('.global-input input')[0]).value = (<HTMLInputElement>$('.global-input input')[0]).value.slice(0, (<HTMLInputElement>$('.global-input input')[0]).value.length - 1);
       return ;
     }
     if ((<HTMLInputElement>$('.global-input input')[0]).value.length > 2) {
-      (<HTMLInputElement>$('.global-input input')[0]).value = (<HTMLInputElement>$('.global-input input')[0]).value.slice(0, 2);  
+      (<HTMLInputElement>$('.global-input input')[0]).value = (<HTMLInputElement>$('.global-input input')[0]).value.slice(0, 2);
       console.log(this.$store.state.isInput.value)
     }
     let type = this.$store.state.isInput.type;

@@ -5,6 +5,7 @@ import jquery from 'jquery'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import axios from 'axios';
+import {setTransform} from "@/utils/shared/svg-utils";
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
@@ -15,6 +16,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
 axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? '' : 'http://qgstudio.org:11291';
 
 declare global {
+  let windows: any;
   interface Window {
     $: any,
     vue: any
@@ -23,6 +25,7 @@ declare global {
     $: any
   }
 }
+
 
 declare module 'vue/types/vue' {
   interface Vue {

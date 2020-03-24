@@ -5,9 +5,10 @@ import { findItem, findList } from './shared/vlist-utils';
 
 /**
  * @description 上传时候的处理，先处理视图，再处理choiceTarget
- * @param {} target 
+ * @param {} target
  */
 export function choiceUpdate(this: any, target: any) {
+  // 循环拿到接近于画板的容器对象
   while ($(target).parent()[0].getAttribute('id') !== 'main-svg-container') {
     target = $(target).parent()[0];
   }
@@ -25,7 +26,7 @@ export function choiceUpdate(this: any, target: any) {
       (<any>$('#' + rootList.judge[i].id)[0].getElementsByClassName('choice-path')[0]).style.stroke = 'rgba(0, 0, 0, .3)';
       (<any>$('#' + rootList.judge[i].id)[0].getElementsByClassName('choice-path')[1]).style.stroke = 'rgba(0, 0, 0, .3)';
     }
-    
+
   }
   target.getElementsByClassName('choice-path')[0].style.stroke = 'yellow';
   target.getElementsByClassName('choice-path')[1].style.stroke = 'yellow';

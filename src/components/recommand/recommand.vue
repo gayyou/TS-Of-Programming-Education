@@ -522,8 +522,11 @@ export default class RecommandPage extends Vue {
 
   recommandToMain(e: any, data: any) {
     if (data.confirm) {
+      console.log(this.list)
       let $container = $("#container");
       let width = $container.width() || 0;
+      let x = this.$data.list[this.index].contain.circle[0].x;
+      let y = this.$data.list[this.index].contain.circle[0].y;
       this.$data.list[this.index].contain.circle[0].x = width / 2;
       this.$data.list[this.index].contain.circle[0].y = 50;
       this.$store.state.isCode = true;
@@ -532,6 +535,9 @@ export default class RecommandPage extends Vue {
         this.$data.list[this.index].contain,
         this.$store.state.canvasList
       );
+
+      this.$data.list[this.index].contain.circle[0].y = y;
+      this.$data.list[this.index].contain.circle[0].x = x;
 
       setTimeout(() => {
         this.$store.state.isRenew = !this.$store.state.isRenew;
